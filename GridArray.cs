@@ -42,22 +42,19 @@ public class GridArray : MonoBehaviour {
 	}
 
 
-	private void Update() {
-		if(Input.GetMouseButtonDown(0)){
-			this.generate();
-			string row = "";
-			for(int x = 0;x< xDimension;x++){
-				for(int y = 1;y< yDimension;y++){
+	private void logArray() {	//This logs a visualisation of mapArray in the unity log
+			string row = "\n";			
+			for(int y = 0;y< yDimension;y++){
+				for(int x = 0;x< xDimension;x++){	//this will loop through all entries in the array
 					int entry = mapArray[y,x];
-					row = row + "(" + entry.ToString() + ")";
+					row = row + "(" + entry.ToString() + ")";	//this adds the value in the current entry to the string row
 				}
-				row = row + "\n";
+				row = row + "\n";	//this starts a new line once a row is over
 			}
 			Debug.Log(row);
-		}
 	}
 
-	private void generate() {
+	public void generate() {
 		xDimension = Random.Range(4, 7);	//generates a random number between 4 and 6 for the horizontal size of the grid
 		yDimension = Random.Range(4, 7);	//generates a random number between 4 and 6 for the vertical size of the grid
 	//	mapSize = xDimension*yDimension;	//holds the overall size of the map for later calculations
@@ -65,7 +62,7 @@ public class GridArray : MonoBehaviour {
 
 		this.Place(1,1);	//This will place the player on the grid
 
-		enemyCount = Random.Range(1,4);		//generates a random number between 1 and 3 for the number of enemies in the level
+		enemyCount = Random.Range(1,3);		//generates a random number between 1 and 2 for the number of enemies in the level
 		this.Place(enemyCount, 2);			//Calls place fucntion to fill in item placement on the grid
 
 		barrierCount = Random.Range(1,4);	//generates a random number between 1 and 3 for the number of barriers in the level
@@ -73,5 +70,11 @@ public class GridArray : MonoBehaviour {
 
 		itemCount = Random.Range(1,3);		//generates how many items will be in the level (between 1 and 2)
 		this.Place(itemCount, 3);			//Calls place fucntion to fill in item placement on the grid
+
+		this.logArray();
+	}
+
+	public int[,] getArray(){
+		return(mapArray);
 	}
 }
