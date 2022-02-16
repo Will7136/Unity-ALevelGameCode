@@ -42,6 +42,7 @@ public class GridArray : MonoBehaviour {
 	}
 
 
+
 	private void logArray() {	//This logs a visualisation of mapArray in the unity log
 			string row = "\n";			
 			for(int y = 0;y< yDimension;y++){
