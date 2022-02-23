@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrawGrid : MonoBehaviour {
 
     private GridArray gridObject;
-	private int[,] gridArray;
+	public int[,] gridArray;
 	private bool OddY;
 	private int midY;
 	private int midX;
