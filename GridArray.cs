@@ -63,7 +63,7 @@ public class GridArray : MonoBehaviour {
 
 		this.Place(1,1);	//This will place the player on the grid
 
-		enemyCount = Random.Range(1,3);		//generates a random number between 1 and 2 for the number of enemies in the level
+		enemyCount = Random.Range(1,2);		//generates a random number between 1 and 2 for the number of enemies in the level
 		this.Place(enemyCount, 2);			//Calls place fucntion to fill in item placement on the grid
 
 		barrierCount = Random.Range(1,4);	//generates a random number between 1 and 3 for the number of barriers in the level
