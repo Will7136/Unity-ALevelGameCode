@@ -40,4 +40,22 @@ public class NodeArrayCreator : MonoBehaviour {
 	public Nodeclass[,] getNodeArray(){
 		return(nodeArray);
 	}
+
+	public void changeEnemyLocation(int newX, int newY){
+		for (int y = 0;y<gridObject.yDimension;y++){		
+			for(int x = 0;x<gridObject.xDimension;x++){
+				if (nodeArray[y,x].contents == 2){
+					if((gridArray[y,x] != 0) & (gridArray[y,x] != 2)){
+						nodeArray[y,x].contents = gridArray[y,x];
+					}
+					else{
+						nodeArray[y,x].contents = 0;
+					}
+				}
+				else if ((x == newX) & (y == newY)){
+					nodeArray[y,x].contents = 2;
+				}
+			}
+		}
+	}
 }
