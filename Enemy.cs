@@ -11,6 +11,10 @@ public class Enemy : MonoBehaviour {
 	private int xDim;
 	
 	private int yDim;
+	private GameObject replaceEnemy;
+	public GameObject newEnemy;
+	private GameObject floorTiles;
+	private NodeArrayCreator nodeArrayCreator;
 
 
 	
@@ -132,5 +136,32 @@ public class Enemy : MonoBehaviour {
 			neighbourList.Add(GM.getNode((node.x), (node.y + 1)));
 		}
 		return(neighbourList);
+	}
+
+
+	public void moveEnemyOnce(List<Nodeclass> path){
+		if(path.Count > 1){
+			replaceEnemy = GameObject.FindGameObjectWithTag("Enemy");
+			Vector3 originalCoordinateEnemy = new Vector3();
+			originalCoordinateEnemy = replaceEnemy.transform.position;
+			Destroy(replaceEnemy);
+			floorTiles = GameObject.Find("FloorTiles");
+			Nodeclass nextNode = path[0];
+			int xDiff = nextNode.x - startNode.x;
+			int yDiff = (nextNode.y - startNode.y) * -1;
+			float currentX = originalCoordinateEnemy.x;
+			float currentY = originalCoordinateEnemy.y;
+
+			GameObject EInstance = Instantiate(newEnemy, new Vector3((currentX + xDiff),(currentY + yDiff), 0), Quaternion.identity) as GameObject;
+			nodeArrayCreator.changeEnemyLocation(nextNode.x, nextNode.y);
+			GM.newNodeArray();
+			startNode = GM.getEnemyNode();
+			path.RemoveAt(0);
+			//EInstance.transform.SetParent(floorTiles);
+		}
+	}
+
+	void Start () {
+		nodeArrayCreator = GameObject.FindObjectOfType<NodeArrayCreator>();
 	}
 }
