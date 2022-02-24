@@ -10,14 +10,18 @@ public class GameManager : MonoBehaviour {
 	private NodeArrayCreator nodeArrayCreator;
 	public Nodeclass[,] nodeArray;
 	private Enemy enemy;
+	private List<Nodeclass> pathQueue;
 	
 
 	void Update () {
 		if (Input.GetKeyDown("space")){
 			nodeArrayCreator.beginNodeArr();
 			nodeArray = nodeArrayCreator.getNodeArray();
-			testPathfind();
+			pathQueue = testPathfind();
 			return;
+		}
+		if (Input.GetKeyDown("p")){
+			enemy.moveEnemyOnce(pathQueue);
 		}
 	}
 
@@ -63,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		return(gridObject.yDimension);
 	}
 
-	private void testPathfind(){
+	private List<Nodeclass> testPathfind(){
 		List<Nodeclass> path = new List<Nodeclass>();
 		path = enemy.pathfind();
 		string pathString = "";
@@ -73,5 +77,13 @@ public class GameManager : MonoBehaviour {
 		}
 
 		Debug.Log(pathString);
+		path.RemoveAt(0);
+		return(path);
 	}
+
+
+	public void newNodeArray(){
+		nodeArray = nodeArrayCreator.getNodeArray();
+	}
+
 }
