@@ -39,15 +39,14 @@ public class Nodeclass  {
 		return(value);
 	}
 
-	public Nodeclass(int Xpos, int Ypos){
-		x = Xpos;
-		y = Ypos;
-		contents = 0;
+	public Nodeclass(int Xpos, int Ypos){	//this is my constructor for my class
+		x = Xpos;							//this sets x and y to parameters
+		y = Ypos;							// and sets all other attribtutes to 
+		contents = 0;						//basic values 
 		gValue = 0;
 		hValue = 0;
 		fValue = 0;
 		Parent = null;
 		walkable = true;
 	}
-
 }
