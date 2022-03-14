@@ -14,13 +14,13 @@ public class GameManager : MonoBehaviour {
 	
 
 	void Update () {
-		if (Input.GetKeyDown("space")){
+		if (Input.GetKeyDown("space")){	//gets the pathfinding list when space is pressed
 			nodeArrayCreator.beginNodeArr();
 			nodeArray = nodeArrayCreator.getNodeArray();
 			pathQueue = testPathfind();
 			return;
 		}
-		if (Input.GetKeyDown("p")){
+		if (Input.GetKeyDown("p")){	//moves the enemy when p is pressed
 			enemy.moveEnemyOnce(pathQueue);
 		}
 	}
@@ -33,38 +33,38 @@ public class GameManager : MonoBehaviour {
 
 	public Nodeclass getNode(int x, int y){
 
-		Nodeclass node = nodeArray[y,x];
-		return(node);
+		Nodeclass node = nodeArray[y,x];	//returns the corresponding node for
+		return(node);						//the given x and y
 	}
 
 	public Nodeclass getEnemyNode(){
 		for (int y = 0;y<gridObject.yDimension;y++){		
-			for(int x = 0;x<gridObject.xDimension;x++){
-				if (nodeArray[y,x].contents == 2){
-					Nodeclass eNode = nodeArray[y,x];
-					return(eNode);
+			for(int x = 0;x<gridObject.xDimension;x++){	//loops through node in the grid
+				if (nodeArray[y,x].contents == 2){		//checks if the node contains an enemy
+					Nodeclass eNode = nodeArray[y,x];	//gets the node that it is inspecting
+					return(eNode);			//returns the node
 				}
 			}
 		}
-		return(null);
+		return(null); //returns null if it doesnt find an enemy
 	}
 	public Nodeclass getPlayerNode(){
 		for (int y = 0;y<gridObject.yDimension;y++){		
-			for(int x = 0;x<gridObject.xDimension;x++){
-				if (nodeArray[y,x].contents == 1){
-					Nodeclass pNode = nodeArray[y,x];
-					return(pNode);
+			for(int x = 0;x<gridObject.xDimension;x++){	//loops through node in the grid
+				if (nodeArray[y,x].contents == 1){		//checks if the node contains the player
+					Nodeclass pNode = nodeArray[y,x];	//gets the node that it is inspecting
+					return(pNode);		//returns the node
 				}
 			}
 		}
-		return(null);
+		return(null);	//returns null if it doesnt find the player
 	}
 
 	public int getXDimension(){
-		return(gridObject.xDimension);
+		return(gridObject.xDimension);	//returns the x dimension
 	}
 	public int getYDimension(){
-		return(gridObject.yDimension);
+		return(gridObject.yDimension);	// returns the y dimension
 	}
 
 	private List<Nodeclass> testPathfind(){
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
 
 
 	public void newNodeArray(){
-		nodeArray = nodeArrayCreator.getNodeArray();
+		nodeArray = nodeArrayCreator.getNodeArray();//updates the nodeArray in case it has changed
 	}
 
 }
