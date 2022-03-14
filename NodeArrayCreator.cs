@@ -6,6 +6,8 @@ public class NodeArrayCreator : MonoBehaviour {
 
 	private GridArray gridObject;
 	private int [,] gridArray;
+	private int[,] originalGridArray;
+	private bool copyCheck = false;
 	private Nodeclass [,] nodeArray;// array made of nodeclass that gives more information about each individual tile
 
 
@@ -16,6 +18,10 @@ public class NodeArrayCreator : MonoBehaviour {
 
 	public void beginNodeArr(){
 		gridArray = gridObject.getArray();		// sets the array from gridObject to its own variable
+		if (!copyCheck){
+			originalGridArray = gridArray;	//will always hold the original grid array
+			copyCheck = true;
+		}
 		nodeArray = new Nodeclass[(gridObject.yDimension),(gridObject.xDimension)]; //sets the dimensions of nodeArray to the same dimensions that grid array has
 		nodeArray = this.generateNodeArr(gridArray, gridObject);//sets nodeArray to the nodeclass array returned from generateNodeArr
 	}
@@ -38,22 +44,22 @@ public class NodeArrayCreator : MonoBehaviour {
 	}
 
 	public Nodeclass[,] getNodeArray(){
-		return(nodeArray);
+		return(nodeArray);	//returns the nodeArray
 	}
 
 	public void changeEnemyLocation(int newX, int newY){
-		for (int y = 0;y<gridObject.yDimension;y++){		
+		for (int y = 0;y<gridObject.yDimension;y++){	//loops through all values in the arrays	
 			for(int x = 0;x<gridObject.xDimension;x++){
-				if (nodeArray[y,x].contents == 2){
-					if((gridArray[y,x] != 0) & (gridArray[y,x] != 2)){
-						nodeArray[y,x].contents = gridArray[y,x];
+				if (nodeArray[y,x].contents == 2){	//If there is an enemy on this tile
+					if((gridArray[y,x] != 0) & (gridArray[y,x] != 2)){	//if there wasn't originally an empty tile or the enemy
+						nodeArray[y,x].contents = gridArray[y,x];	//assigns contents to its original value
 					}
 					else{
-						nodeArray[y,x].contents = 0;
+						nodeArray[y,x].contents = 0;	// sets the contents to 0
 					}
 				}
-				else if ((x == newX) & (y == newY)){
-					nodeArray[y,x].contents = 2;
+				else if ((x == newX) & (y == newY)){	// if this is the new position of the enemy
+					nodeArray[y,x].contents = 2;	//assigns contents to 2
 				}
 			}
 		}
