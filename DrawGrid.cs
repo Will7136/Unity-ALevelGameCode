@@ -18,6 +18,8 @@ public class DrawGrid : MonoBehaviour {
 	public GameObject EnemyTile;
 	public GameObject ItemTile;
 	public GameObject BarrierTile;
+	public List<GameObject> tileList = new List<GameObject>();
+	public GameObject[,] tileArray;
 	
 
     private void Start() {
@@ -26,11 +28,11 @@ public class DrawGrid : MonoBehaviour {
         gridObject = GameObject.FindObjectOfType<GridArray>();	//gets the grid array
 		gridObject.generate();									// generates a grid array
 		gridArray = gridObject.getArray();	//assigns the actual array made by grid object to an array
-
 		for (int y = 0;y<gridObject.yDimension;y++){		//loops through every entry in the array from
 			for(int x = 0;x<gridObject.xDimension;x++){		//top to bottom, left to right
 				GameObject Instance = Instantiate(FloorTile, new Vector3(x,-y,0f), Quaternion.identity) as GameObject;
 				Instance.transform.SetParent(FloorTiles);	//Creates an instance of a floor tile to create the grid and childs it to an empty gameobject
+				tileList.Add(Instance);	//gameobject is added to a list for later
 				if (gridArray[y,x] == 1){	// find if the player is on this tile
 					GameObject PInstance = Instantiate(PlayerTile, new Vector3(x,-y,0f), Quaternion.identity) as GameObject;
 					PInstance.transform.SetParent(FloorTiles);	//creates an instance of a player object on this tile
