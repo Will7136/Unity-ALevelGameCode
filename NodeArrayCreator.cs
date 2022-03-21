@@ -9,11 +9,13 @@ public class NodeArrayCreator : MonoBehaviour {
 	private int[,] originalGridArray;
 	private bool copyCheck = false;
 	private Nodeclass [,] nodeArray;// array made of nodeclass that gives more information about each individual tile
+	private GameManager GM;
 
 
 
 	void Start () {
 		gridObject = GameObject.FindObjectOfType<GridArray>();	//finds the gridArray object
+		GM = GameObject.FindObjectOfType<GameManager>();
 	}
 
 	public void beginNodeArr(){
@@ -47,11 +49,16 @@ public class NodeArrayCreator : MonoBehaviour {
 		return(nodeArray);	//returns the nodeArray
 	}
 
-	public void changeEnemyLocation(int newX, int newY){
+	public void changeCharacterLocation(int newX, int newY, int charVal){
+		Nodeclass originalPlayerNode = GM.getPlayerNode();
 		for (int y = 0;y<gridObject.yDimension;y++){	//loops through all values in the arrays	
 			for(int x = 0;x<gridObject.xDimension;x++){
-				if (nodeArray[y,x].contents == 2){	//If there is an enemy on this tile
-					if((gridArray[y,x] != 0) & (gridArray[y,x] != 2)){	//if there wasn't originally an empty tile or the enemy
+				if (nodeArray[y,x].contents == charVal){	//If there is an enemy on this tile
+					if ((gridArray[y,x] == 3) & (charVal == 1)){
+						nodeArray[y,x].contents = 0;
+						gridArray[y,x] = 0;
+					}
+					else if ((gridArray[y,x] != 0) & (gridArray[y,x] != charVal)){	//if there wasn't originally an empty tile or the enemy
 						nodeArray[y,x].contents = gridArray[y,x];	//assigns contents to its original value
 					}
 					else{
@@ -59,7 +66,40 @@ public class NodeArrayCreator : MonoBehaviour {
 					}
 				}
 				else if ((x == newX) & (y == newY)){	// if this is the new position of the enemy
-					nodeArray[y,x].contents = 2;	//assigns contents to 2
+					nodeArray[y,x].contents =charVal;	//assigns contents to 2
+					if (gridArray[y,x] == 3){
+						GM.getCoin();
+						GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
+						GameObject Player = GameObject.FindGameObjectWithTag("Player");
+						
+						foreach(GameObject coin in coins){
+							Vector3 coinPos = coin.transform.localPosition;
+							Vector3 playerPos = Player.transform.localPosition;
+							float playerXPos = 9999;
+							float playerYPos = 9999;
+							if((originalPlayerNode.x - newX) == -1){
+								playerXPos = Player.transform.localPosition.x + 1;
+								playerYPos = Player.transform.localPosition.y;
+							}
+							else if((originalPlayerNode.x - newX) == 1){
+								playerXPos = Player.transform.localPosition.x - 1;
+								playerYPos = Player.transform.localPosition.y;
+							}
+							else if((originalPlayerNode.y - newY) == -1){
+								playerXPos = Player.transform.localPosition.x;
+								playerYPos = Player.transform.localPosition.y - 1;
+							}
+							else if((originalPlayerNode.y - newY) == 1){
+								playerXPos = Player.transform.localPosition.x;
+								playerYPos = Player.transform.localPosition.y + 1;
+							}
+
+
+							if((coinPos.x == playerXPos) & (coinPos.y == playerYPos)){
+								Destroy(coin);
+							}
+						}
+					}
 				}
 			}
 		}
