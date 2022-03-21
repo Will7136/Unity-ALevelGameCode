@@ -11,12 +11,11 @@ public class GameManager : MonoBehaviour {
 	public Nodeclass[,] nodeArray;
 	private Enemy enemy;
 	private List<Nodeclass> pathQueue;
+	private int score = 0;
 	
 
 	void Update () {
 		if (Input.GetKeyDown("space")){	//gets the pathfinding list when space is pressed
-			nodeArrayCreator.beginNodeArr();
-			nodeArray = nodeArrayCreator.getNodeArray();
 			pathQueue = testPathfind();
 			return;
 		}
@@ -29,6 +28,8 @@ public class GameManager : MonoBehaviour {
 		gridObject = GameObject.FindObjectOfType<GridArray>();
 		nodeArrayCreator = GameObject.FindObjectOfType<NodeArrayCreator>();
 		enemy = GameObject.FindObjectOfType<Enemy>();
+		nodeArrayCreator.beginNodeArr();
+		nodeArray = nodeArrayCreator.getNodeArray();
 	}
 
 	public Nodeclass getNode(int x, int y){
@@ -84,6 +85,11 @@ public class GameManager : MonoBehaviour {
 
 	public void newNodeArray(){
 		nodeArray = nodeArrayCreator.getNodeArray();//updates the nodeArray in case it has changed
+	}
+
+	public void getCoin(){
+		score = score + 5;
+		Debug.Log("NEW SCORE IS : " + score);
 	}
 
 }
