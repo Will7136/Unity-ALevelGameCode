@@ -58,19 +58,21 @@ public class GridArray : MonoBehaviour {
 	public void generate() {
 		xDimension = Random.Range(4, 7);	//generates a random number between 4 and 6 for the horizontal size of the grid
 		yDimension = Random.Range(4, 7);	//generates a random number between 4 and 6 for the vertical size of the grid
+	//	xDimension = 20;	//generates a random number between 4 and 6 for the horizontal size of the grid
+	//	yDimension = 20;
 	//	mapSize = xDimension*yDimension;	//holds the overall size of the map for later calculations
 		mapArray = new int[yDimension,xDimension]; //creates an empty array that has a element for every cell in the grid
 
 		this.Place(1,1);	//This will place the player on the grid
-
-		enemyCount = Random.Range(1,2);		//generates a random number between 1 and 2 for the number of enemies in the level
-		this.Place(enemyCount, 2);			//Calls place fucntion to fill in item placement on the grid
 
 		barrierCount = Random.Range(1,4);	//generates a random number between 1 and 3 for the number of barriers in the level
 		this.Place(barrierCount, 4);		//This will place any enemies on the grid
 
 		itemCount = Random.Range(1,3);		//generates how many items will be in the level (between 1 and 2)
 		this.Place(itemCount, 3);			//Calls place fucntion to fill in item placement on the grid
+
+		enemyCount = Random.Range(1,2);		//generates a random number between 1 and 2 for the number of enemies in the level
+		this.Place(enemyCount, 2);			//Calls place fucntion to fill in item placement on the grid
 
 		this.logArray();
 	}
