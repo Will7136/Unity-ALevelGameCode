@@ -54,6 +54,8 @@ public class Enemy : MonoBehaviour {
 		startNode.hValue = startNode.calcH(startNode, endNode);	//this works out its h value using manhattan heuristic
 		startNode.fValue = startNode.CalcF();	// this calculates f based on the g and h
 
+
+
 		while(openList.Count > 0){	//loops until opnelist is empty
 			Nodeclass currentNode = LowestFNode(openList);	//calls lowestfNode to find the next best node
 
@@ -64,7 +66,7 @@ public class Enemy : MonoBehaviour {
 			openList.Remove(currentNode);	//the currentnode is removed from openlist and added to closed list
 			closedList.Add(currentNode);
 
-			List<Nodeclass> neighbours = getNeighbours(currentNode);	//All of the neighbours of currentnode are added to a list
+			List<Nodeclass> neighbours = getNeighbours(currentNode, GM, xDim, yDim);
 
 			for(int x = 0;x <neighbours.Count;x++){	//loops though all of the neighbours
 				Nodeclass currentNeighbour = neighbours[x]; //selects the current neighbour being inspected
@@ -120,7 +122,8 @@ public class Enemy : MonoBehaviour {
 		return(pathList);	//returns the list
 	}
 
-	private List<Nodeclass> getNeighbours(Nodeclass node){
+
+	public List<Nodeclass> getNeighbours(Nodeclass node, GameManager GM, int xDim, int yDim){	//takes extra parameters so that it can also be used later outside of pathfinding
 		List<Nodeclass> neighbourList = new List<Nodeclass>();	//creates a list to hold all of the neighbours
 
 		if ((node.x -1) >=0){
@@ -153,7 +156,8 @@ public class Enemy : MonoBehaviour {
 			float currentY = originalCoordinateEnemy.y;
 
 			GameObject EInstance = Instantiate(newEnemy, new Vector3((currentX + xDiff),(currentY + yDiff), 0), Quaternion.identity) as GameObject;	//instantiates the new enemy in their new position
-			nodeArrayCreator.changeEnemyLocation(nextNode.x, nextNode.y);	//updates the position for the enemy
+			EInstance.transform.SetParent(floorTiles.transform);
+			nodeArrayCreator.changeCharacterLocation(nextNode.x, nextNode.y, 2);	//updates the position for the enemy
 			GM.newNodeArray();	//updates nodeArray for the player
 			startNode = GM.getEnemyNode();	//Gets the new startNode
 			path.RemoveAt(0);	//Removes the first item in te path
