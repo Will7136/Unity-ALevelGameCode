@@ -26,9 +26,56 @@ public class GridArray : MonoBehaviour {
 			xPos = Random.Range(0, xDimension-1);	//chooses a random x coordinate in the array
 			yPos = Random.Range(0, yDimension-1);	//chooses a random y coordinate in the array
 
-			while (mapArray[yPos, xPos] != 0){
-			xPos = Random.Range(0, xDimension-1);	//chooses new coordinates if the current coordinate already contains something
-			yPos = Random.Range(0, yDimension-1);
+			bool canPlace = false;
+
+			while (canPlace == false){
+
+			if (mapArray[yPos, xPos] == 0){
+				if (type == 3){		//if this is a coin then it can be placed next to anyone
+					canPlace = true;	//exits the loop
+				}
+				else if (type == 4){	//if this is a barrier
+					if (!checkDiagonalCells(type, 4, mapArray)){
+						xPos = Random.Range(0, xDimension-1);// if any of the diagonal positions from this cell also conatin 4 regenerate x and y
+						yPos = Random.Range(0, yDimension-1);
+					}	//chooses new coordinates if the current coordinate already contains something
+					else{
+						canPlace = true;	//exits the loop
+					}
+				}
+				else if (type == 2){	//if this is an enemy 
+					if (!checkSurroundingCells(type, 1, mapArray)){
+						xPos = Random.Range(0, xDimension-1);// if any of the neighbours of this cell conatin 1 regenerate x and y
+						yPos = Random.Range(0, yDimension-1);
+					}
+					else{
+						canPlace = true;	//exits the loop
+					}
+				}
+				else{
+					canPlace = true;
+				}
+
+
+
+				// else{	//if this is the player 
+				// 	if ((mapArray[xPos-1, yPos] == 1) || (mapArray[xPos+1, yPos] == 2) || (mapArray[xPos, yPos+1] == 1) || (mapArray[xPos, yPos-1] == 1)){
+				// 		xPos = Random.Range(0, xDimension-1);// if any of the neighbours of this cell conatin 1 regenerate x and y
+				// 		yPos = Random.Range(0, yDimension-1);
+				// 	}
+				// 	else{
+				// 		canPlace = true;	//exits the loop
+				// 	}
+
+				// }
+			}
+			else{
+				xPos = Random.Range(0, xDimension-1);	//chooses new coordinates if the current coordinate already contains something
+				yPos = Random.Range(0, yDimension-1);
+			}
+
+
+
 			}
 
 			mapArray[yPos,xPos] = type;		//changes the value in the chosen coordinates corresponding position in grid array to the value of type.
@@ -79,5 +126,76 @@ public class GridArray : MonoBehaviour {
 
 	public int[,] getArray(){
 		return(mapArray);
+	}
+
+	public bool checkSurroundingCells(int type, int checkVal, int[,] array){	//checks the cells to the left, right, up and down 
+
+		bool returnVal = true;
+
+		if (yPos-1 >= 0){
+			if (mapArray[yPos-1, xPos] == checkVal){
+				returnVal = false;	//if this is the value being checked for then return val is false
+			}
+		}
+		if (yPos + 1 < yDimension){
+			if (mapArray[yPos+1, xPos] == checkVal){
+				returnVal = false;	//if this is the value being checked for then return val is false
+			}
+		}
+		if (xPos - 1 >= 0){
+			if (mapArray[yPos, xPos-1] == checkVal){
+				returnVal = false;	//if this is the value being checked for then return val is false
+			}
+		}
+		if (xPos + 1 < xDimension){
+			if (mapArray[yPos, xPos+1] == checkVal){
+				returnVal = false;	//if this is the value being checked for then return val is false
+			}
+		}
+
+
+		if (returnVal){	//returns true or false depending on the value of return val
+			return(true);
+		}
+		else{
+			return(false);
+		}
+	}
+	public bool checkDiagonalCells(int type, int checkVal, int[,] array){	//checks the cells that are diagonal to the starting cell
+
+		bool returnVal = true;
+
+		if (yPos-1 >= 0){
+			if (xPos-1 >= 0){
+				if (mapArray[yPos-1, xPos-1] == checkVal){
+					returnVal = false;	//if this is the value being checked for then return val is false
+				}
+			}
+			if (xPos+1 < xDimension){
+				if (mapArray[yPos-1, xPos+1] == checkVal){
+					returnVal = false;	//if this is the value being checked for then return val is false
+				}
+			}
+		}
+		if (yPos+1 < yDimension){
+			if (xPos-1 >= 0){
+				if (mapArray[yPos+1, xPos-1] == checkVal){
+					returnVal = false;	//if this is the value being checked for then return val is false
+				}
+			}
+			if (xPos+1 < xDimension){
+				if (mapArray[yPos+1, xPos+1] == checkVal){
+					returnVal = false;	//if this is the value being checked for then return val is false
+				}
+			}
+		}
+
+
+		if (returnVal){	//returns true or false depending on the value of return val
+			return(true);
+		}
+		else{
+			return(false);
+		}
 	}
 }
