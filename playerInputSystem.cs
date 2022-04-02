@@ -19,6 +19,7 @@ public class playerInputSystem : MonoBehaviour {
 	private newPlayerMovement movePlayer;
 	private Enemy enemy;
 	private bool playerHasMoved = false;
+	private CombatScript comScript;
 
 
 	void Start() {
@@ -28,10 +29,11 @@ public class playerInputSystem : MonoBehaviour {
 		enemy = GameObject.FindObjectOfType<Enemy>();
 		nodeArray = GM.nodeArray;
 		InpCamera.transform.position = new Vector3(((GM.getXDimension() -1.0f)/2.0f), -(((GM.getYDimension() -1.0f)/2.0f)),0);
+		comScript = GameObject.FindObjectOfType<CombatScript>();
 		//Moves the camera by the exact opposite transformation that was done to each tile when instantaiting them
 	}
 
-	void Update () {
+	public void playerTurn(){
 		if (Input.GetMouseButtonDown(0)){
 			//Debug.Log(MainCamera.ScreenToWorldPoint(Input.mousePosition));
 			WhenClickTile();
@@ -112,6 +114,7 @@ public class playerInputSystem : MonoBehaviour {
 					reselectedTileAgain = false;	//the same tile hasn't been selected
 					PlayerStillSelected = false;	//player is no longer selected
 					CheckIfCanMove(X, Y, tile);
+					CheckIfCanAttack(X, Y, tile);
 				}
 				
 				else{
@@ -135,17 +138,32 @@ public class playerInputSystem : MonoBehaviour {
 	}
 
 	private void CheckIfCanMove(int X, int Y, GameObject tile){
-		List<Nodeclass> surroundingNodes = enemy.getNeighbours(GM.getPlayerNode(), GM, GM.getXDimension(), GM.getYDimension());
-
-		foreach(Nodeclass node in surroundingNodes){
-			if ((nodeArray[Y, X] == node) & (nodeArray[Y,X].contents != 4) & (nodeArray[Y,X].contents != 2)){
-				movePlayer.movePlayerOnce(node);
+		List<Nodeclass> surroundingNodes = enemy.getNeighbours(GM.getPlayerNode(), GM, GM.getXDimension(), GM.getYDimension());	
+		//gets the tiles surrounding the player
+		foreach(Nodeclass node in surroundingNodes){//loops through all of the neighbours
+			if ((nodeArray[X, Y] == node) & (nodeArray[Y,X].contents != 4) & (nodeArray[Y,X].contents != 2)){
+				movePlayer.movePlayerOnce(node);	//Checks if the player can move to the chosen position
 				tile.GetComponent<ChangeTileColor>().DeselectTile();
-				preX = 9999;
+				preX = 9999;	//changes colour and resets the required variables.
 				preY = 9999;
 				selectedTile = false;
 			}
 		}
+	}
+
+	private void CheckIfCanAttack(int X, int Y, GameObject tile){
+		List<Nodeclass> surroundingNodes = enemy.getNeighbours(GM.getPlayerNode(), GM, GM.getXDimension(), GM.getYDimension());
+		//gets the tiles surrounding the player
+		foreach(Nodeclass node in surroundingNodes){
+			if ((nodeArray[Y, X] == node) & (node.contents == 2)){	//if the is the selected node and it contains an enemy
+				comScript.enemyHit(4);	//attacks enemy if possible
+				tile.GetComponent<ChangeTileColor>().DeselectTile();
+				preX = 9999;	//changes colour and resets the required variables.
+				preY = 9999;
+				selectedTile = false;
+			}
+		}
+
 	}
 
 }
