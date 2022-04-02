@@ -9,10 +9,12 @@ public class newPlayerMovement : MonoBehaviour {
 		GameManager Gm;
 		NodeArrayCreator nodeArrayCreator;
 		[SerializeField] GameObject newPlayer;
+		private TurnManager tManager;
 
 		void Start(){
 			Gm = GameObject.FindObjectOfType<GameManager>();
 			nodeArrayCreator = GameObject.FindObjectOfType<NodeArrayCreator>();
+			tManager = GameObject.FindObjectOfType<TurnManager>();
 		}
 
 	
@@ -31,5 +33,12 @@ public class newPlayerMovement : MonoBehaviour {
 			PInstance.transform.SetParent(floorTiles.transform);
 			nodeArrayCreator.changeCharacterLocation(nextNode.x, nextNode.y, 1);	//updates the position for the enemy
 			Gm.newNodeArray();	//updates nodeArray for the player
+			if (!tManager.needToChangeTurn){
+				tManager.needToChangeTurn = true;
+			}
+			else{
+				tManager.changeTurn();
+				tManager.needToChangeTurn = false;
+			}
 		}
 }
