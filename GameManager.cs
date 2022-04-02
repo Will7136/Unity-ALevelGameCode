@@ -11,18 +11,17 @@ public class GameManager : MonoBehaviour {
 	public Nodeclass[,] nodeArray;
 	private Enemy enemy;
 	private List<Nodeclass> pathQueue;
-	private int score = 0;
 	
 
-	void Update () {
-		if (Input.GetKeyDown("space")){	//gets the pathfinding list when space is pressed
-			pathQueue = testPathfind();
-			return;
-		}
-		if (Input.GetKeyDown("p")){	//moves the enemy when p is pressed
-			enemy.moveEnemyOnce(pathQueue);
-		}
-	}
+	// void Update () {
+	// 	if (Input.GetKeyDown("space")){	//gets the pathfinding list when space is pressed
+	// 		pathQueue = testPathfind();
+	// 		return;
+	// 	}
+	// 	if (Input.GetKeyDown("p")){	//moves the enemy when p is pressed
+	// 		enemy.moveEnemyOnce(pathQueue);
+	// 	}
+	// }
 
 	void Start(){
 		gridObject = GameObject.FindObjectOfType<GridArray>();
@@ -68,28 +67,24 @@ public class GameManager : MonoBehaviour {
 		return(gridObject.yDimension);	// returns the y dimension
 	}
 
-	private List<Nodeclass> testPathfind(){
-		List<Nodeclass> path = new List<Nodeclass>();
-		path = enemy.pathfind();
-		string pathString = "";
-		for (int x = 0; x < path.Count; x++){
-			string nextNode = "(" + (path[x].x).ToString() + ", " + (path[x].y).ToString() + ")";
-			pathString = pathString + nextNode + "   ";
-		}
+	// private List<Nodeclass> testPathfind(){
+	// 	List<Nodeclass> path = new List<Nodeclass>();
+	// 	path = enemy.pathfind();
+	// 	string pathString = "";
+	// 	for (int x = 0; x < path.Count; x++){
+	// 		string nextNode = "(" + (path[x].x).ToString() + ", " + (path[x].y).ToString() + ")";
+	// 		pathString = pathString + nextNode + "   ";
+	// 	}
 
-		Debug.Log(pathString);
-		path.RemoveAt(0);
-		return(path);
-	}
+	// 	Debug.Log(pathString);
+	// 	path.RemoveAt(0);
+	// 	return(path);
+	// }
 
 
 	public void newNodeArray(){
 		nodeArray = nodeArrayCreator.getNodeArray();//updates the nodeArray in case it has changed
 	}
 
-	public void getCoin(){
-		score = score + 5;
-		Debug.Log("NEW SCORE IS : " + score);
-	}
 
 }
